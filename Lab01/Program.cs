@@ -15,7 +15,8 @@ namespace Lab01
 
         static void Main(string[] args)
         {
-            var basePath = "C:\\Users\\ausflR\\source\\repos\\InteligentnaAnaliza\\reuters21578";
+            // directory with text files
+            var basePath = "C:\\reuters21578";
             var match = new Regex(@"reut.*\.sgm");
 
             try
