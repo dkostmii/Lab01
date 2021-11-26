@@ -6,8 +6,6 @@ using System.Text.RegularExpressions;
 
 using static Lab01.Util;
 
-using Porter2Stemmer;
-
 namespace Lab01
 {
     class Program
@@ -50,10 +48,32 @@ namespace Lab01
             return result;
         }
 
+        static void CreateOrEmptyDir(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            else
+            {
+                var match = new Regex(@"_output\.txt");
+                foreach (var file in Directory.EnumerateFiles(path))
+                {
+                    if (match.IsMatch(Path.GetFileName(file)))
+                    {
+                        File.Delete(file);
+                    }
+                }
+            }
+        }
+
         static void Main(string[] args)
         {
             // directory with text files
             var basePath = "C:\\Users\\ausflR\\source\\repos\\InteligentnaAnaliza\\reuters21578";
+            var outputDir = "C:\\Users\\ausflR\\source\\repos\\InteligentnaAnaliza\\output";
+
+            CreateOrEmptyDir(outputDir);
 
             var countryTags = new string[] { "west-germany", "usa", "france", "uk", "canada", "japan" };
             var checkAnalyzedCountry = new Func<string, bool>(country => CheckContains(country, countryTags));
@@ -88,6 +108,8 @@ namespace Lab01
                             {
                                 freqs.Increment(place);
                             }
+
+                            File.AppendAllText(outputDir + "\\" + file + "_output.txt", "Article:\n_________\n" + article.TEXT.BODY + "\n", System.Text.Encoding.UTF8);
                         }
                     }
 
