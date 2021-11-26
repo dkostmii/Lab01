@@ -6,6 +6,8 @@ using System.Text.RegularExpressions;
 
 using static Lab01.Util;
 
+using Porter2Stemmer;
+
 namespace Lab01
 {
     class Program
