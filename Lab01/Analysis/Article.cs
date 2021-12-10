@@ -8,6 +8,14 @@ namespace Lab01.Analysis
         public Place Place { get; private set; }
         public string Text { get; private set; }
 
+        public string[] Words 
+        { 
+            get
+            {
+                return Text.Split(" ");
+            } 
+        }
+
         public Article(Place place, String text)
         {
             Place = place;
@@ -15,6 +23,11 @@ namespace Lab01.Analysis
         }
 
         public int Length { get { return Text.Length; } }
+
+        public int WordCount { get { return Words.Length; } }
+
+
+        // TODO: Implement the rest of estimation params here
 
 
         // Static
