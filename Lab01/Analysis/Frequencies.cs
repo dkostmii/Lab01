@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Lab01
-{
+
+namespace Lab01.Analysis {
     class Frequencies
     {
-        private Dictionary<string, int> _freqs;
+        private readonly Dictionary<Place, int> _freqs;
 
-        public Frequencies(string[] tags)
+        public Frequencies(Place[] tags)
         {
             if (tags.Length > 0)
             {
-                _freqs = new Dictionary<string, int>();
+                _freqs = new Dictionary<Place, int>();
                 foreach (var tag in tags)
                 {
                     _freqs.Add(tag, 0);
@@ -24,7 +23,7 @@ namespace Lab01
             }
         }
 
-        public void Increment(string tag)
+        public void Increment(Place tag)
         {
             if (_freqs.ContainsKey(tag))
             {
@@ -36,7 +35,7 @@ namespace Lab01
             }
         }
 
-        public Dictionary<string, int> Data
+        public Dictionary<Place, int> Data
         {
             get => _freqs;
         }

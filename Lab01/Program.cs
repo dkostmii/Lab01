@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using System.Text.RegularExpressions;
 
+using Lab01.Analysis;
 using static Lab01.Util;
+using System.Text;
 
 namespace Lab01
 {
@@ -23,6 +25,10 @@ namespace Lab01
 
             foreach (var file in Directory.EnumerateFiles(basePath))
             {
+                if (counter > 0)
+                {
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                }
                 counter++;
                 Console.WriteLine(String.Format("{0:0.0}", (double) counter / filesCount * 100) + "%");
 
@@ -75,11 +81,7 @@ namespace Lab01
 
             CreateOrEmptyDir(outputDir);
 
-            var countryTags = new string[] { "west-germany", "usa", "france", "uk", "canada", "japan" };
-            var checkAnalyzedCountry = new Func<string, bool>(country => CheckContains(country, countryTags));
-
-            var summaryFreqs = new Frequencies(countryTags);
-
+            var summaryFreqs = new Frequencies(Places.All);
             try
             {
                 var data = ReadArticleFiles(basePath);
@@ -91,25 +93,35 @@ namespace Lab01
                     var file = keyValuePair.Key;
                     var articles = keyValuePair.Value;
 
-                    var freqs = new Frequencies(countryTags);
+                    var freqs = new Frequencies(Places.All);
 
                     // Display articles count
                     Console.WriteLine("[" + file + "]: Znaleziono " + articles.REUTERS.Length + "artykułów.");
 
-                    foreach (var article in articles.REUTERS)
+                    foreach (var articleRaw in articles.REUTERS)
                     {
                         // find the articles with exactly 1 tag in countryTags
                         // with non-empty body
-                        if (article.PLACES.Length == 1 &&
-                            checkAnalyzedCountry(article.PLACES[0]) &&
-                            article.TEXT.BODY != null)
+                        if (Article.SelectArticle(articleRaw))
                         {
-                            foreach (var place in article.PLACES)
-                            {
-                                freqs.Increment(place);
-                            }
+                            var article = Article.CreateArticle(articleRaw);
+                            freqs.Increment(article.Place);
 
-                            File.AppendAllText(outputDir + "\\" + file + "_output.txt", "Article:\n_________\n" + article.TEXT.BODY + "\n", System.Text.Encoding.UTF8);
+                            StringBuilder builder = new StringBuilder();
+
+                            String path = Path.Join(outputDir, $"{file}_output.txt");
+                            String separator = "\n_________\n";
+
+                            builder.Append("Article: ");
+                            builder.Append(separator);
+                            builder.Append("Place: ");
+                            builder.Append(article.Place);
+                            builder.Append(separator);
+                            builder.Append(article.Text);
+                            builder.Append("\n");
+                            builder.Append("\n");
+
+                            File.AppendAllText(path, builder.ToString(), System.Text.Encoding.UTF8);
                         }
                     }
 
