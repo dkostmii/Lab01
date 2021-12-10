@@ -1,8 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
-using System.Linq;
-
-using Lab01.Analysis;
+﻿using System.Text.RegularExpressions;
 
 namespace Lab01
 {

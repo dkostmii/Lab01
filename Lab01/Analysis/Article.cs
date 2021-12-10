@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
+using Lab01.Data;
 
 namespace Lab01.Analysis
 {
@@ -8,12 +11,12 @@ namespace Lab01.Analysis
         public Place Place { get; private set; }
         public string Text { get; private set; }
 
-        public string[] Words 
+        public List<string> Words 
         { 
             get
             {
-                return Text.Split(" ");
-            } 
+                return Text.Split(" ").ToList();
+            }
         }
 
         public Article(Place place, String text)
@@ -24,10 +27,34 @@ namespace Lab01.Analysis
 
         public int Length { get { return Text.Length; } }
 
-        public int WordCount { get { return Words.Length; } }
-
+        public int WordCount { get { return Words.Count; } }
 
         // TODO: Implement the rest of estimation params here
+
+        public int MonthNamesCount
+        {
+            get
+            {
+                return Words.Where(w => Month.IsMonth(w)).Count();
+            }
+        }
+
+        public int YearNumberCount
+        {
+            get
+            {
+                return Words.Where(w => Year.IsYear(Convert.ToInt32(w))).Count();
+            }
+        }
+
+        public int AbbreviationCount
+        {
+            get
+            {
+                return Words.Where(w => Abbreviation.IsAbbreviation(w)).Count();
+            }
+        }
+
 
 
         // Static

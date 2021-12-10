@@ -2,11 +2,13 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using System.Text;
 using System.Text.RegularExpressions;
 
 using Lab01.Analysis;
+using Lab01.Data;
+
 using static Lab01.Util;
-using System.Text;
 
 namespace Lab01
 {
@@ -116,6 +118,12 @@ namespace Lab01
                             builder.Append(separator);
                             builder.Append("Place: ");
                             builder.Append(article.Place);
+                            builder.Append(separator);
+                            builder.Append("Month name words count: ");
+                            builder.Append(article.MonthNamesCount);
+                            builder.Append(separator);
+                            builder.Append("Abbreviation count: ");
+                            builder.Append(article.AbbreviationCount);
                             builder.Append(separator);
                             builder.Append(article.Text);
                             builder.Append("\n");
